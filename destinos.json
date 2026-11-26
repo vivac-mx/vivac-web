@@ -1,0 +1,22 @@
+{
+  "destinos": [
+    {
+      "nombre": "San Miguel de Allende",
+      "descripcion": "Guanajuato, donde nació vivac.mx.",
+      "imagen": "/img/parroquia.webp",
+      "ocultar": false
+    },
+    {
+      "nombre": "Chichén Itzá",
+      "descripcion": "Yucatán, excursión desde Cancún.",
+      "imagen": "/img/chichen-itza.webp",
+      "ocultar": false
+    },
+    {
+      "nombre": "Ciudad de México",
+      "descripcion": "Palacio de Bellas Artes y mucho más.",
+      "imagen": "/img/bellas-artes.webp",
+      "ocultar": false
+    }
+  ]
+}

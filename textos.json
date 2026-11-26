@@ -1,0 +1,15 @@
+{
+  "inicio": {
+    "titulo": "Tu viaje a Cancún, armado a tu medida.",
+    "texto": "Somos una agencia de viajes online 100% mexicana. Cuéntanos cuándo quieres viajar y te enviamos una cotización clara de vuelo y hotel.",
+    "nota": "Vuelo + hotel con la mejor relación precio-calidad. Comparamos aerolíneas y hoteles por ti."
+  },
+  "paquetes": {
+    "titulo": "Paquetes a Cancún",
+    "subtitulo": "Tres formas de empezar. Todos se ajustan a tus fechas, tu ciudad de salida y tu presupuesto."
+  },
+  "destinos": {
+    "titulo": "Más destinos de México",
+    "subtitulo": "Además de Cancún, armamos viajes a ciudades y pueblos de todo el país."
+  }
+}

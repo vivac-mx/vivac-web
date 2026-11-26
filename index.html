@@ -60,22 +60,20 @@ h3{font-size:22px;font-weight:600;margin-bottom:6px}
 .tile p{font-size:15px;opacity:.95;margin-bottom:8px}
 .tile a{font-weight:600;text-decoration:none;border-bottom:2px solid currentColor}
 .tile img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:auto;max-width:none}
-.t1 img{height:64%;width:auto}
-.t2 img{width:100%}
-.t3 img{width:100%}
+.tile img{width:100%}
+.tile.alta img{height:64%;width:auto}
 .sub{color:var(--gris);max-width:55ch;margin-bottom:36px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .paq{background:var(--blanco);padding:0;border-top:6px solid var(--granate);overflow:hidden}
 .paq .cuerpo{padding:26px 30px 30px}
 .paq .foto{position:relative;height:180px;overflow:hidden;background-size:cover;background-position:center}
 .paq .foto img{position:absolute;height:auto}
-.f1{background-image:url(img/mar.webp);background-position:left bottom}
-.f2{background-image:url(img/cascada.webp);background-position:center 30%}
-.f3{background-image:url(img/mar.webp);background-position:right top}
-.f2 img{right:4%;bottom:-6%;width:46%}
-.f3 img{left:50%;bottom:-8%;width:36%;transform:translateX(-50%)}
-.paq:nth-child(2){border-top-color:var(--verde)}
-.paq:nth-child(3){border-top-color:var(--negro)}
+.paq .foto .fondo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.paq .foto .detalle{position:absolute;right:4%;bottom:-6%;width:42%;height:auto}
+.vigencia{font-size:14px;color:var(--gris);margin:-8px 0 12px}
+.cargando{grid-column:1/-1;color:var(--gris)}
+.paq:nth-child(3n+2){border-top-color:var(--verde)}
+.paq:nth-child(3n){border-top-color:var(--negro)}
 .paq ul{margin:14px 0 22px 18px;color:var(--gris);font-size:16px}
 .paq .precio{font-weight:600;font-size:15px;margin-bottom:14px}
 .paq a.link{font-weight:600;text-decoration:none;color:var(--granate)}
@@ -150,13 +148,13 @@ form{grid-template-columns:1fr}
 <section class="hero">
   <div class="wrap">
     <div class="hero-texto">
-      <h1>Tu viaje a Cancún, armado a tu medida.</h1>
-      <p class="lead">Somos una agencia de viajes online 100% mexicana. Cuéntanos cuándo quieres viajar y te enviamos una cotización clara de vuelo y hotel.</p>
+      <h1 id="hero-titulo">Tu viaje a Cancún, armado a tu medida.</h1>
+      <p class="lead" id="hero-texto">Somos una agencia de viajes online 100% mexicana. Cuéntanos cuándo quieres viajar y te enviamos una cotización clara de vuelo y hotel.</p>
       <div class="acciones">
         <a class="btn" href="#cotizar">Cotiza tu viaje</a>
         <a class="btn claro" href="#paquetes">Ver paquetes</a>
       </div>
-      <p class="nota">Vuelo + hotel con la mejor relación precio-calidad. Comparamos aerolíneas y hoteles por ti.</p>
+      <p class="nota" id="hero-nota">Vuelo + hotel con la mejor relación precio-calidad. Comparamos aerolíneas y hoteles por ti.</p>
     </div>
     <div class="collage" role="img" aria-label="Collage de México: pirámide de Chichén Itzá, Parroquia de San Miguel Arcángel, Palacio de Bellas Artes, globos aerostáticos, una cascada y una guacamaya">
       <img class="c-cascada" src="img/cascada.webp" alt="" width="1000" height="920" fetchpriority="high">
@@ -171,64 +169,17 @@ form{grid-template-columns:1fr}
 
 <section class="paquetes" id="paquetes">
   <div class="wrap">
-    <h2>Paquetes a Cancún</h2>
-    <p class="sub">Tres formas de empezar. Todos se ajustan a tus fechas, tu ciudad de salida y tu presupuesto.</p>
-    <div class="grid3">
-      <article class="paq">
-        <div class="foto f1" role="img" aria-label="Playa de aguas turquesa vista desde arriba"></div>
-        <div class="cuerpo">
-          <h3>Cancún en pareja</h3>
-          <p class="precio">Precio: por definir</p>
-          <ul><li>Vuelo redondo desde tu ciudad</li><li>Hotel con playa</li><li>Traslados y actividades opcionales</li></ul>
-          <a class="link" href="#cotizar">Cotizar este paquete</a>
-        </div>
-      </article>
-      <article class="paq">
-        <div class="foto f2" role="img" aria-label="Cascada rodeada de selva con una guacamaya"><img src="img/guacamaya.webp" alt="" width="760" height="344" loading="lazy"></div>
-        <div class="cuerpo">
-          <h3>Cancún en familia</h3>
-          <p class="precio">Precio: por definir</p>
-          <ul><li>Vuelo para todos los viajeros</li><li>Hotel con opciones para niños</li><li>Parques y excursiones opcionales</li></ul>
-          <a class="link" href="#cotizar">Cotizar este paquete</a>
-        </div>
-      </article>
-      <article class="paq">
-        <div class="foto f3" role="img" aria-label="Globos aerostáticos sobre el mar"><img src="img/globos.webp" alt="" width="700" height="630" loading="lazy"></div>
-        <div class="cuerpo">
-          <h3>Cancún con amigos</h3>
-          <p class="precio">Precio: por definir</p>
-          <ul><li>Vuelo en grupo</li><li>Hotel todo incluido</li><li>Vida nocturna e islas cercanas</li></ul>
-          <a class="link" href="#cotizar">Cotizar este paquete</a>
-        </div>
-      </article>
-    </div>
+    <h2 id="paquetes-titulo">Paquetes a Cancún</h2>
+    <p class="sub" id="paquetes-sub">Tres formas de empezar. Todos se ajustan a tus fechas, tu ciudad de salida y tu presupuesto.</p>
+    <div class="grid3" id="lista-paquetes"><p class="cargando">Cargando paquetes…</p></div>
   </div>
 </section>
 
 <section class="destinos" id="destinos">
   <div class="wrap">
-    <h2>Más destinos de México</h2>
-    <p class="sub">Además de Cancún, armamos viajes a ciudades y pueblos de todo el país.</p>
-    <div class="grid3">
-      <article class="tile t1">
-        <h3>San Miguel de Allende</h3>
-        <p>Guanajuato, donde nació vivac.mx.</p>
-        <a href="#cotizar">Cotizar este destino</a>
-        <img src="img/parroquia.webp" alt="Parroquia de San Miguel Arcángel" width="520" height="899" loading="lazy">
-      </article>
-      <article class="tile t2">
-        <h3>Chichén Itzá</h3>
-        <p>Yucatán, excursión desde Cancún.</p>
-        <a href="#cotizar">Cotizar este destino</a>
-        <img src="img/chichen-itza.webp" alt="Pirámide de Kukulcán en Chichén Itzá" width="1100" height="470" loading="lazy">
-      </article>
-      <article class="tile t3">
-        <h3>Ciudad de México</h3>
-        <p>Palacio de Bellas Artes y mucho más.</p>
-        <a href="#cotizar">Cotizar este destino</a>
-        <img src="img/bellas-artes.webp" alt="Palacio de Bellas Artes" width="900" height="541" loading="lazy">
-      </article>
-    </div>
+    <h2 id="destinos-titulo">Más destinos de México</h2>
+    <p class="sub" id="destinos-sub">Además de Cancún, armamos viajes a ciudades y pueblos de todo el país.</p>
+    <div class="grid3" id="lista-destinos"><p class="cargando">Cargando destinos…</p></div>
   </div>
 </section>
 
@@ -355,6 +306,89 @@ form.addEventListener("submit", function (e) {
       boton.disabled = false;
       boton.textContent = "Enviar cotización";
     });
+});
+
+function el(tag, cls, texto) {
+  var e = document.createElement(tag);
+  if (cls) { e.className = cls; }
+  if (texto !== null && texto !== undefined) { e.textContent = texto; }
+  return e;
+}
+function cargar(url) {
+  return fetch(url, { cache: "no-cache" }).then(function (r) {
+    if (!r.ok) { throw new Error(url); }
+    return r.json();
+  });
+}
+function poner(id, texto) {
+  var e = document.getElementById(id);
+  if (e && texto) { e.textContent = texto; }
+}
+var POSICIONES = ["left bottom", "center 30%", "right top"];
+var COLORES = ["t1", "t2", "t3"];
+
+cargar("datos/textos.json").then(function (d) {
+  var i = d.inicio || {}, p = d.paquetes || {}, x = d.destinos || {};
+  poner("hero-titulo", i.titulo); poner("hero-texto", i.texto); poner("hero-nota", i.nota);
+  poner("paquetes-titulo", p.titulo); poner("paquetes-sub", p.subtitulo);
+  poner("destinos-titulo", x.titulo); poner("destinos-sub", x.subtitulo);
+}).catch(function () {});
+
+cargar("datos/paquetes.json").then(function (d) {
+  var cont = document.getElementById("lista-paquetes");
+  var lista = (d.paquetes || []).filter(function (p) { return p.nombre && p.ocultar !== true; });
+  if (!lista.length) { throw new Error("sin paquetes"); }
+  cont.textContent = "";
+  lista.forEach(function (p, i) {
+    var art = el("article", "paq");
+    var foto = el("div", "foto");
+    if (p.foto) {
+      var im = el("img", "fondo"); im.src = p.foto; im.alt = ""; im.loading = "lazy";
+      im.style.objectPosition = POSICIONES[i % 3]; foto.appendChild(im);
+    }
+    if (p.foto_detalle) {
+      var de = el("img", "detalle"); de.src = p.foto_detalle; de.alt = ""; de.loading = "lazy";
+      foto.appendChild(de);
+    }
+    art.appendChild(foto);
+    var c = el("div", "cuerpo");
+    c.appendChild(el("h3", null, p.nombre));
+    c.appendChild(el("p", "precio", p.precio || "Precio: por definir"));
+    if (p.vigencia) { c.appendChild(el("p", "vigencia", p.vigencia)); }
+    var ul = el("ul");
+    (p.incluye || []).forEach(function (t) { if (t) { ul.appendChild(el("li", null, t)); } });
+    c.appendChild(ul);
+    var a = el("a", "link", "Cotizar este paquete"); a.href = "#cotizar"; c.appendChild(a);
+    art.appendChild(c);
+    cont.appendChild(art);
+  });
+}).catch(function () {
+  var c = document.querySelector("#lista-paquetes .cargando");
+  if (c) { c.textContent = "Escríbenos por WhatsApp y te compartimos nuestros paquetes a Cancún."; }
+});
+
+cargar("datos/destinos.json").then(function (d) {
+  var cont = document.getElementById("lista-destinos");
+  var lista = (d.destinos || []).filter(function (x) { return x.nombre && x.ocultar !== true; });
+  if (!lista.length) { throw new Error("sin destinos"); }
+  cont.textContent = "";
+  lista.forEach(function (x, i) {
+    var art = el("article", "tile " + COLORES[i % 3]);
+    art.appendChild(el("h3", null, x.nombre));
+    art.appendChild(el("p", null, x.descripcion || ""));
+    var a = el("a", null, "Cotizar este destino"); a.href = "#cotizar"; art.appendChild(a);
+    if (x.imagen) {
+      var im = el("img"); im.src = x.imagen; im.alt = x.nombre; im.loading = "lazy";
+      im.addEventListener("load", function () {
+        if (im.naturalHeight > im.naturalWidth) { art.classList.add("alta"); }
+      });
+      art.appendChild(im);
+    }
+    cont.appendChild(art);
+  });
+}).catch(function () {
+  var c = document.querySelector("#lista-destinos .cargando");
+  if (c) { c.textContent = "Escríbenos y armamos tu viaje a cualquier destino de México."; }
 });
 </script>
 </body>
