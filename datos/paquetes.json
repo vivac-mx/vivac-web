@@ -1,0 +1,16 @@
+{
+  "paquetes": [
+    {
+      "nombre": "Cancún Mágico",
+      "precio": "9500",
+      "vigencia": "25 de Enero 2027",
+      "incluye": [
+        "Vuelos Redondos operados por Volaris",
+        "Hospedaje en Hotel Krystal Cancún 3 Noches",
+        "Traslado desde y hacia el Aeropuerto de Cancún"
+      ],
+      "foto": "/img/juan-pablo-garcia-aoA4_nG0oy4-unsplash-vivac.mx.jpg",
+      "ocultar": false
+    }
+  ]
+}
