@@ -54,6 +54,11 @@ label.full,form .btn,form small{grid-column:1/-1}
 input,select,textarea{font:400 17px "Outfit",sans-serif;padding:12px 14px;border:1.5px solid #9a9a9a;border-radius:10px;background:var(--blanco)}
 textarea{min-height:90px;resize:vertical}
 form small{color:var(--gris);font-size:14px}
+#estado{grid-column:1/-1;font-size:16px;font-weight:500;min-height:1.5em}
+#estado.ok{color:var(--verde)}
+#estado.err{color:var(--granate)}
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+button:disabled{opacity:.6;cursor:wait}
 .pasos{counter-reset:p;list-style:none;padding:0;margin-top:26px}
 .pasos li{counter-increment:p;display:grid;grid-template-columns:44px 1fr;gap:14px;margin-bottom:20px}
 .pasos li::before{content:counter(p);width:44px;height:44px;border-radius:50%;background:var(--granate);color:var(--blanco);font-weight:700;display:grid;place-items:center}
@@ -154,7 +159,7 @@ form{grid-template-columns:1fr}
   <div class="wrap">
     <div>
       <h2>Pide tu cotización</h2>
-      <p class="sub">Llena el formulario y se abrirá WhatsApp con tus datos listos para enviarnos.</p>
+      <p class="sub">Llena el formulario y te respondemos con tu cotización por correo o WhatsApp.</p>
       <ol class="pasos">
         <li><div><b>Cuéntanos tu viaje</b><span>Destino, fechas y cuántas personas viajan.</span></div></li>
         <li><div><b>Recibe tu cotización</b><span>Te enviamos vuelo y hotel con precios claros.</span></div></li>
@@ -163,6 +168,8 @@ form{grid-template-columns:1fr}
     </div>
     <form id="form-cotiza">
       <label>Nombre<input name="nombre" required autocomplete="name"></label>
+      <label>Correo electrónico<input type="email" name="correo" required autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+      <label>WhatsApp o teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="Ej. 998 123 4567"></label>
       <label>Ciudad de salida<input name="origen" required placeholder="Ej. Ciudad de México"></label>
       <label>Destino
         <select name="destino"><option>Cancún</option><option>Otro destino de México</option></select>
@@ -173,8 +180,10 @@ form{grid-template-columns:1fr}
       <label>Adultos<input type="number" name="adultos" min="1" value="2" required></label>
       <label>Menores<input type="number" name="menores" min="0" value="0"></label>
       <label class="full">Comentarios<textarea name="notas" placeholder="Tipo de hotel, actividades, aerolínea preferida…"></textarea></label>
-      <button class="btn verde" type="submit">Enviar por WhatsApp</button>
-      <small>Al enviar se abre WhatsApp. No guardamos tus datos en este sitio.</small>
+      <label class="trampa" aria-hidden="true">No llenar<input name="web" tabindex="-1" autocomplete="off"></label>
+      <button class="btn verde" type="submit">Enviar cotización</button>
+      <p id="estado" role="status" aria-live="polite"></p>
+      <small>Tus datos se envían a vivac.mx solo para preparar tu cotización. No se guardan en este sitio.</small>
     </form>
   </div>
 </section>
@@ -230,18 +239,45 @@ form{grid-template-columns:1fr}
 // WhatsApp de vivac.mx en formato internacional, sin + ni espacios.
 var WHATSAPP = "529983394281";
 document.getElementById("wa-flotante").href = "https://wa.me/" + WHATSAPP;
-document.getElementById("form-cotiza").addEventListener("submit", function (e) {
+var form = document.getElementById("form-cotiza");
+var estado = document.getElementById("estado");
+var salida = form.elements["salida"];
+var regreso = form.elements["regreso"];
+function hoy() {
+  var d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
+}
+function fijarMinimos() { salida.min = hoy(); regreso.min = salida.value || hoy(); }
+fijarMinimos();
+salida.addEventListener("change", function () {
+  regreso.min = salida.value || hoy();
+  if (regreso.value && regreso.value < regreso.min) { regreso.value = ""; }
+});
+form.addEventListener("submit", function (e) {
   e.preventDefault();
-  var f = new FormData(e.target);
-  var t = "Hola, quiero cotizar un viaje con vivac.mx:\n" +
-    "Nombre: " + f.get("nombre") + "\n" +
-    "Salgo de: " + f.get("origen") + "\n" +
-    "Destino: " + f.get("destino") + "\n" +
-    "Fechas: " + f.get("salida") + " al " + f.get("regreso") + "\n" +
-    "Viajeros: " + f.get("adultos") + " adultos, " + f.get("menores") + " menores\n" +
-    "Presupuesto: " + (f.get("presupuesto") || "por definir") + "\n" +
-    "Comentarios: " + (f.get("notas") || "ninguno");
-  window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t), "_blank");
+  var boton = form.querySelector("button[type=submit]");
+  boton.disabled = true;
+  boton.textContent = "Enviando…";
+  estado.className = "";
+  estado.textContent = "";
+  fetch("send-cotizacion.php", { method: "POST", body: new FormData(form) })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d.ok) { var err = new Error("servidor"); err.mensaje = d.error; throw err; }
+      form.reset();
+      fijarMinimos();
+      estado.className = "ok";
+      estado.textContent = "¡Listo! Recibimos tu solicitud y te respondemos pronto con tu cotización.";
+    })
+    .catch(function (err) {
+      estado.className = "err";
+      estado.textContent = err.mensaje || "No pudimos enviar tu solicitud. Escríbenos por WhatsApp y te atendemos de inmediato.";
+    })
+    .then(function () {
+      boton.disabled = false;
+      boton.textContent = "Enviar cotización";
+    });
 });
 </script>
 </body>
