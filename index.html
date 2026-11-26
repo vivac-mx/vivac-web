@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vivac.mx | Viajes y vacaciones a Cancún hechos a tu medida</title>
+<meta name="description" content="Agencia de viajes online mexicana. Paquetes a Cancún y otros destinos de México, con cotización personalizada por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--granate:#880808;--verde:#1E7A02;--verde-claro:#EAF3E6;--negro:#000;--gris:#4a4a4a;--linea:#d9d9d9;--blanco:#fff}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:"Outfit",system-ui,sans-serif;color:var(--negro);background:var(--blanco);line-height:1.55;font-size:18px}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--verde);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+.bandera{height:8px;background:linear-gradient(90deg,var(--verde) 0 33.3%,var(--blanco) 33.3% 66.6%,var(--granate) 66.6%);border-bottom:1px solid var(--linea)}
+header{position:sticky;top:0;background:var(--blanco);z-index:5;border-bottom:1px solid var(--linea)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:10px;padding-bottom:10px}
+header img{height:48px;width:auto}
+nav{display:flex;gap:22px;flex-wrap:wrap;font-weight:500;font-size:16px}
+nav a{text-decoration:none}
+nav a:hover{color:var(--granate)}
+.btn{display:inline-block;background:var(--granate);color:var(--blanco);font:600 17px "Outfit",sans-serif;padding:14px 26px;border:0;border-radius:999px;text-decoration:none;cursor:pointer}
+.btn:hover{background:#6c0606}
+.btn.verde{background:var(--verde)}
+.btn.verde:hover{background:#176002}
+section{padding:80px 0}
+h1{font-size:clamp(40px,7vw,76px);line-height:1.02;font-weight:800;letter-spacing:-.02em;max-width:14ch}
+h2{font-size:clamp(30px,4.5vw,44px);line-height:1.1;font-weight:700;letter-spacing:-.01em;margin-bottom:12px}
+h3{font-size:22px;font-weight:600;margin-bottom:6px}
+.lead{font-size:20px;color:var(--gris);max-width:52ch;margin:22px 0 32px}
+.hero .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+.hero-panel{background:var(--verde);color:var(--blanco);border-radius:28px 28px 120px 28px;padding:40px;min-height:360px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero-panel p{font-size:15px;opacity:.9}
+.hero-panel strong{font-size:30px;line-height:1.15;font-weight:700;display:block;margin-bottom:10px}
+.acciones{display:flex;gap:14px;flex-wrap:wrap}
+.paquetes{background:var(--verde-claro)}
+.sub{color:var(--gris);max-width:55ch;margin-bottom:36px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.paq{background:var(--blanco);padding:30px;border-top:6px solid var(--granate)}
+.paq:nth-child(2){border-top-color:var(--verde)}
+.paq:nth-child(3){border-top-color:var(--negro)}
+.paq ul{margin:14px 0 22px 18px;color:var(--gris);font-size:16px}
+.paq .precio{font-weight:600;font-size:15px;margin-bottom:14px}
+.paq a.link{font-weight:600;text-decoration:none;color:var(--granate)}
+.cotiza .wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:56px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:flex;flex-direction:column;font-size:15px;font-weight:500;gap:6px}
+label.full,form .btn,form small{grid-column:1/-1}
+input,select,textarea{font:400 17px "Outfit",sans-serif;padding:12px 14px;border:1.5px solid #9a9a9a;border-radius:10px;background:var(--blanco)}
+textarea{min-height:90px;resize:vertical}
+form small{color:var(--gris);font-size:14px}
+.pasos{counter-reset:p;list-style:none;padding:0;margin-top:26px}
+.pasos li{counter-increment:p;display:grid;grid-template-columns:44px 1fr;gap:14px;margin-bottom:20px}
+.pasos li::before{content:counter(p);width:44px;height:44px;border-radius:50%;background:var(--granate);color:var(--blanco);font-weight:700;display:grid;place-items:center}
+.pasos li:nth-child(2)::before{background:var(--verde)}
+.pasos li:nth-child(3)::before{background:var(--negro)}
+.pasos b{display:block;font-size:19px}
+.pasos span{color:var(--gris);font-size:16px}
+.valores{background:var(--negro);color:var(--blanco)}
+.valores .sub{color:#cfcfcf}
+.valores .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.valores h3{border-top:4px solid var(--verde);padding-top:14px}
+.valores .grid4>div:nth-child(odd) h3{border-top-color:var(--granate)}
+.valores p{font-size:16px;color:#d6d6d6}
+.nosotros .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.nosotros p{margin-bottom:14px;color:var(--gris)}
+.cita{border-left:6px solid var(--verde);padding-left:20px;font-size:22px;font-weight:500;line-height:1.35}
+.cita cite{display:block;margin-top:10px;font-size:15px;font-style:normal;color:var(--gris)}
+.contacto{background:var(--verde-claro)}
+.contacto .datos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.contacto .datos div{border-top:3px solid var(--granate);padding-top:12px}
+.contacto .datos div:nth-child(2){border-top-color:var(--verde)}
+.contacto .datos div:nth-child(3){border-top-color:var(--negro)}
+footer{padding:30px 0;font-size:14px;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.wa{position:fixed;right:20px;bottom:20px;background:var(--verde);color:var(--blanco);font-weight:600;padding:14px 22px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:6}
+@media(max-width:860px){
+.hero .wrap,.cotiza .wrap,.nosotros .wrap{grid-template-columns:1fr}
+.grid3,.valores .grid4,.contacto .datos{grid-template-columns:1fr}
+nav{display:none}
+section{padding:56px 0}
+.hero-panel{min-height:240px}
+form{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="bandera" aria-hidden="true"></div>
+<header>
+  <div class="wrap">
+    <a href="#inicio" aria-label="vivac.mx, inicio"><img src="logo-vivac.png" alt="vivac.mx"></a>
+    <nav aria-label="Principal">
+      <a href="#paquetes">Paquetes</a>
+      <a href="#cotizar">Cotizar</a>
+      <a href="#nosotros">Quiénes somos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn" href="#cotizar">Cotiza tu viaje</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <h1>Tu viaje a Cancún, armado a tu medida.</h1>
+      <p class="lead">Somos una agencia de viajes online 100% mexicana. Cuéntanos cuándo quieres viajar y te enviamos una cotización clara de vuelo y hotel.</p>
+      <div class="acciones">
+        <a class="btn" href="#cotizar">Cotiza tu viaje</a>
+        <a class="btn verde" href="#paquetes">Ver paquetes</a>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <strong>Vuelo + hotel, con la mejor relación precio-calidad.</strong>
+      <p>Comparamos aerolíneas y hoteles por ti.</p>
+    </div>
+  </div>
+</section>
+
+<section class="paquetes" id="paquetes">
+  <div class="wrap">
+    <h2>Paquetes a Cancún</h2>
+    <p class="sub">Tres formas de empezar. Todos se ajustan a tus fechas, tu ciudad de salida y tu presupuesto.</p>
+    <div class="grid3">
+      <article class="paq">
+        <h3>Cancún en pareja</h3>
+        <p class="precio">Precio: por definir</p>
+        <ul><li>Vuelo redondo desde tu ciudad</li><li>Hotel con playa</li><li>Traslados y actividades opcionales</li></ul>
+        <a class="link" href="#cotizar">Cotizar este paquete</a>
+      </article>
+      <article class="paq">
+        <h3>Cancún en familia</h3>
+        <p class="precio">Precio: por definir</p>
+        <ul><li>Vuelo para todos los viajeros</li><li>Hotel con opciones para niños</li><li>Parques y excursiones opcionales</li></ul>
+        <a class="link" href="#cotizar">Cotizar este paquete</a>
+      </article>
+      <article class="paq">
+        <h3>Cancún con amigos</h3>
+        <p class="precio">Precio: por definir</p>
+        <ul><li>Vuelo en grupo</li><li>Hotel todo incluido</li><li>Vida nocturna e islas cercanas</li></ul>
+        <a class="link" href="#cotizar">Cotizar este paquete</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="cotiza" id="cotizar">
+  <div class="wrap">
+    <div>
+      <h2>Pide tu cotización</h2>
+      <p class="sub">Llena el formulario y se abrirá WhatsApp con tus datos listos para enviarnos.</p>
+      <ol class="pasos">
+        <li><div><b>Cuéntanos tu viaje</b><span>Destino, fechas y cuántas personas viajan.</span></div></li>
+        <li><div><b>Recibe tu cotización</b><span>Te enviamos vuelo y hotel con precios claros.</span></div></li>
+        <li><div><b>Reserva con confianza</b><span>Te acompañamos desde el pago hasta tu regreso.</span></div></li>
+      </ol>
+    </div>
+    <form id="form-cotiza">
+      <label>Nombre<input name="nombre" required autocomplete="name"></label>
+      <label>Ciudad de salida<input name="origen" required placeholder="Ej. Ciudad de México"></label>
+      <label>Destino
+        <select name="destino"><option>Cancún</option><option>Otro destino de México</option></select>
+      </label>
+      <label>Presupuesto aproximado<input name="presupuesto" placeholder="Ej. $25,000 MXN"></label>
+      <label>Fecha de salida<input type="date" name="salida" required></label>
+      <label>Fecha de regreso<input type="date" name="regreso" required></label>
+      <label>Adultos<input type="number" name="adultos" min="1" value="2" required></label>
+      <label>Menores<input type="number" name="menores" min="0" value="0"></label>
+      <label class="full">Comentarios<textarea name="notas" placeholder="Tipo de hotel, actividades, aerolínea preferida…"></textarea></label>
+      <button class="btn verde" type="submit">Enviar por WhatsApp</button>
+      <small>Al enviar se abre WhatsApp. No guardamos tus datos en este sitio.</small>
+    </form>
+  </div>
+</section>
+
+<section class="valores">
+  <div class="wrap">
+    <h2>Lo que nos mueve</h2>
+    <p class="sub">Los valores con los que atendemos cada viaje.</p>
+    <div class="grid4">
+      <div><h3>Servir con pasión</h3><p>Atendemos con entrega y dedicación a cada viajero.</p></div>
+      <div><h3>Valorar a las personas</h3><p>Tratamos a todos como personas, nunca como un número.</p></div>
+      <div><h3>Trabajar en equipo</h3><p>Cada persona suma para cumplir tu viaje ideal.</p></div>
+      <div><h3>Valorar el tiempo</h3><p>Tu tiempo vale oro: respondemos rápido y con claridad.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="nosotros" id="nosotros">
+  <div class="wrap">
+    <div>
+      <h2>Quiénes somos</h2>
+      <p>Nacimos el 20 de septiembre de 2019 en San Miguel de Allende, Guanajuato, de la idea de los hermanos Jesús Antonio y Jorge Antonio Mozqueda Rivera.</p>
+      <p>Queremos que vivac.mx sea la plataforma de viajes personalizados más completa de México, para que cada viajero encuentre su viaje ideal con la mejor relación precio-calidad.</p>
+      <p>VIVAC significa <b>Viajes y Vacaciones</b>. El tipi de nuestro logotipo recuerda el origen de la palabra: un campamento. El pin de ubicación dice que podemos llegar a cualquier destino.</p>
+    </div>
+    <blockquote class="cita">“Viajar, dormir y enamorarse, son tres formas de irse a lugares que no siempre entendemos.”<cite>Ángeles Mastretta</cite></blockquote>
+  </div>
+</section>
+
+<section class="contacto" id="contacto">
+  <div class="wrap">
+    <h2>Contacto</h2>
+    <p class="sub">Escríbenos por el canal que prefieras.</p>
+    <div class="datos">
+      <div><h3>WhatsApp</h3><p>[Agregar número]</p></div>
+      <div><h3>Redes sociales</h3><p>[Agregar Instagram / Facebook]</p></div>
+      <div><h3>Oficina</h3><p>Plaza Comercial La Vista, Local 19, San Miguel de Allende, Gto.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Vivac Vacations de México S.A.S. de C.V. Todos los derechos reservados.</span>
+    <span>www.vivac.mx</span>
+  </div>
+</footer>
+
+<a class="wa" id="wa-flotante" href="#cotizar">Cotizar por WhatsApp</a>
+
+<script>
+// IMPORTANTE: cambia este número por el WhatsApp real de vivac.mx (formato internacional, sin + ni espacios).
+var WHATSAPP = "520000000000";
+document.getElementById("wa-flotante").href = "https://wa.me/" + WHATSAPP;
+document.getElementById("form-cotiza").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var f = new FormData(e.target);
+  var t = "Hola, quiero cotizar un viaje con vivac.mx:\n" +
+    "Nombre: " + f.get("nombre") + "\n" +
+    "Salgo de: " + f.get("origen") + "\n" +
+    "Destino: " + f.get("destino") + "\n" +
+    "Fechas: " + f.get("salida") + " al " + f.get("regreso") + "\n" +
+    "Viajeros: " + f.get("adultos") + " adultos, " + f.get("menores") + " menores\n" +
+    "Presupuesto: " + (f.get("presupuesto") || "por definir") + "\n" +
+    "Comentarios: " + (f.get("notas") || "ninguno");
+  window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(t), "_blank");
+});
+</script>
+</body>
+</html>
