@@ -33,15 +33,47 @@ h1{font-size:clamp(40px,7vw,76px);line-height:1.02;font-weight:800;letter-spacin
 h2{font-size:clamp(30px,4.5vw,44px);line-height:1.1;font-weight:700;letter-spacing:-.01em;margin-bottom:12px}
 h3{font-size:22px;font-weight:600;margin-bottom:6px}
 .lead{font-size:20px;color:var(--gris);max-width:52ch;margin:22px 0 32px}
-.hero .wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
-.hero-panel{background:var(--verde);color:var(--blanco);border-radius:28px 28px 120px 28px;padding:40px;min-height:360px;display:flex;flex-direction:column;justify-content:flex-end}
-.hero-panel p{font-size:15px;opacity:.9}
-.hero-panel strong{font-size:30px;line-height:1.15;font-weight:700;display:block;margin-bottom:10px}
+.hero{position:relative;overflow:hidden;padding:0;color:var(--blanco);background:#0b3d22 url(img/mar.webp) center/cover no-repeat}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,38,20,.84) 0%,rgba(4,38,20,.5) 42%,rgba(4,38,20,.06) 100%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1fr 1.25fr;gap:24px;align-items:end;min-height:640px;padding-top:48px;padding-bottom:0}
+.hero-texto{align-self:center;padding-bottom:48px}
+.hero h1{color:var(--blanco);text-shadow:0 2px 20px rgba(0,0,0,.35)}
+.hero .lead{color:#f1f5ef;margin-bottom:22px}
+.hero .nota{margin-top:22px;font-size:16px;font-weight:600;max-width:40ch}
+.btn.claro{background:var(--blanco);color:var(--granate)}
+.btn.claro:hover{background:#f1f1f1}
+.collage{position:relative;width:100%;aspect-ratio:1/.92;align-self:end}
+.collage img{position:absolute;height:auto;display:block}
+.c-cascada{right:0;top:4%;width:46%;border-radius:28px;z-index:1;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.c-globos{right:2%;top:0;width:34%;z-index:2}
+.c-bellas{right:0;bottom:0;width:52%;z-index:3}
+.c-parroquia{left:4%;bottom:0;width:27%;z-index:3}
+.c-chichen{left:17%;bottom:0;width:62%;z-index:4}
+.c-guacamaya{left:-2%;top:10%;width:40%;z-index:5}
 .acciones{display:flex;gap:14px;flex-wrap:wrap}
 .paquetes{background:var(--verde-claro)}
+.tile{position:relative;overflow:hidden;min-height:360px;border-radius:22px;padding:26px;color:var(--blanco)}
+.tile.t1{background:var(--granate)}
+.tile.t2{background:var(--verde)}
+.tile.t3{background:var(--negro)}
+.tile h3,.tile p,.tile a{position:relative;z-index:2}
+.tile p{font-size:15px;opacity:.95;margin-bottom:8px}
+.tile a{font-weight:600;text-decoration:none;border-bottom:2px solid currentColor}
+.tile img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:auto;max-width:none}
+.t1 img{height:64%;width:auto}
+.t2 img{width:100%}
+.t3 img{width:100%}
 .sub{color:var(--gris);max-width:55ch;margin-bottom:36px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.paq{background:var(--blanco);padding:30px;border-top:6px solid var(--granate)}
+.paq{background:var(--blanco);padding:0;border-top:6px solid var(--granate);overflow:hidden}
+.paq .cuerpo{padding:26px 30px 30px}
+.paq .foto{position:relative;height:180px;overflow:hidden;background-size:cover;background-position:center}
+.paq .foto img{position:absolute;height:auto}
+.f1{background-image:url(img/mar.webp);background-position:left bottom}
+.f2{background-image:url(img/cascada.webp);background-position:center 30%}
+.f3{background-image:url(img/mar.webp);background-position:right top}
+.f2 img{right:4%;bottom:-6%;width:46%}
+.f3 img{left:50%;bottom:-8%;width:36%;transform:translateX(-50%)}
 .paq:nth-child(2){border-top-color:var(--verde)}
 .paq:nth-child(3){border-top-color:var(--negro)}
 .paq ul{margin:14px 0 22px 18px;color:var(--gris);font-size:16px}
@@ -89,7 +121,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .grid3,.valores .grid4,.contacto .datos{grid-template-columns:1fr}
 nav{display:none}
 section{padding:56px 0}
-.hero-panel{min-height:240px}
+.hero .wrap{min-height:0}
+.hero-texto{padding-bottom:8px}
+.collage{margin-top:8px}
+.hero::before{background:linear-gradient(180deg,rgba(4,38,20,.8) 0%,rgba(4,38,20,.4) 100%)}
 form{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -102,6 +137,7 @@ form{grid-template-columns:1fr}
     <a href="#inicio" aria-label="vivac.mx, inicio"><img src="logo-vivac.png" alt="vivac.mx"></a>
     <nav aria-label="Principal">
       <a href="#paquetes">Paquetes</a>
+      <a href="#destinos">Destinos</a>
       <a href="#cotizar">Cotizar</a>
       <a href="#nosotros">Quiénes somos</a>
       <a href="#contacto">Contacto</a>
@@ -113,17 +149,22 @@ form{grid-template-columns:1fr}
 <main id="inicio">
 <section class="hero">
   <div class="wrap">
-    <div>
+    <div class="hero-texto">
       <h1>Tu viaje a Cancún, armado a tu medida.</h1>
       <p class="lead">Somos una agencia de viajes online 100% mexicana. Cuéntanos cuándo quieres viajar y te enviamos una cotización clara de vuelo y hotel.</p>
       <div class="acciones">
         <a class="btn" href="#cotizar">Cotiza tu viaje</a>
-        <a class="btn verde" href="#paquetes">Ver paquetes</a>
+        <a class="btn claro" href="#paquetes">Ver paquetes</a>
       </div>
+      <p class="nota">Vuelo + hotel con la mejor relación precio-calidad. Comparamos aerolíneas y hoteles por ti.</p>
     </div>
-    <div class="hero-panel">
-      <strong>Vuelo + hotel, con la mejor relación precio-calidad.</strong>
-      <p>Comparamos aerolíneas y hoteles por ti.</p>
+    <div class="collage" role="img" aria-label="Collage de México: pirámide de Chichén Itzá, Parroquia de San Miguel Arcángel, Palacio de Bellas Artes, globos aerostáticos, una cascada y una guacamaya">
+      <img class="c-cascada" src="img/cascada.webp" alt="" width="1000" height="920" fetchpriority="high">
+      <img class="c-globos" src="img/globos.webp" alt="" width="700" height="630">
+      <img class="c-bellas" src="img/bellas-artes.webp" alt="" width="900" height="541">
+      <img class="c-parroquia" src="img/parroquia.webp" alt="" width="520" height="899">
+      <img class="c-chichen" src="img/chichen-itza.webp" alt="" width="1100" height="470">
+      <img class="c-guacamaya" src="img/guacamaya.webp" alt="" width="760" height="344">
     </div>
   </div>
 </section>
@@ -134,22 +175,58 @@ form{grid-template-columns:1fr}
     <p class="sub">Tres formas de empezar. Todos se ajustan a tus fechas, tu ciudad de salida y tu presupuesto.</p>
     <div class="grid3">
       <article class="paq">
-        <h3>Cancún en pareja</h3>
-        <p class="precio">Precio: por definir</p>
-        <ul><li>Vuelo redondo desde tu ciudad</li><li>Hotel con playa</li><li>Traslados y actividades opcionales</li></ul>
-        <a class="link" href="#cotizar">Cotizar este paquete</a>
+        <div class="foto f1" role="img" aria-label="Playa de aguas turquesa vista desde arriba"></div>
+        <div class="cuerpo">
+          <h3>Cancún en pareja</h3>
+          <p class="precio">Precio: por definir</p>
+          <ul><li>Vuelo redondo desde tu ciudad</li><li>Hotel con playa</li><li>Traslados y actividades opcionales</li></ul>
+          <a class="link" href="#cotizar">Cotizar este paquete</a>
+        </div>
       </article>
       <article class="paq">
-        <h3>Cancún en familia</h3>
-        <p class="precio">Precio: por definir</p>
-        <ul><li>Vuelo para todos los viajeros</li><li>Hotel con opciones para niños</li><li>Parques y excursiones opcionales</li></ul>
-        <a class="link" href="#cotizar">Cotizar este paquete</a>
+        <div class="foto f2" role="img" aria-label="Cascada rodeada de selva con una guacamaya"><img src="img/guacamaya.webp" alt="" width="760" height="344" loading="lazy"></div>
+        <div class="cuerpo">
+          <h3>Cancún en familia</h3>
+          <p class="precio">Precio: por definir</p>
+          <ul><li>Vuelo para todos los viajeros</li><li>Hotel con opciones para niños</li><li>Parques y excursiones opcionales</li></ul>
+          <a class="link" href="#cotizar">Cotizar este paquete</a>
+        </div>
       </article>
       <article class="paq">
-        <h3>Cancún con amigos</h3>
-        <p class="precio">Precio: por definir</p>
-        <ul><li>Vuelo en grupo</li><li>Hotel todo incluido</li><li>Vida nocturna e islas cercanas</li></ul>
-        <a class="link" href="#cotizar">Cotizar este paquete</a>
+        <div class="foto f3" role="img" aria-label="Globos aerostáticos sobre el mar"><img src="img/globos.webp" alt="" width="700" height="630" loading="lazy"></div>
+        <div class="cuerpo">
+          <h3>Cancún con amigos</h3>
+          <p class="precio">Precio: por definir</p>
+          <ul><li>Vuelo en grupo</li><li>Hotel todo incluido</li><li>Vida nocturna e islas cercanas</li></ul>
+          <a class="link" href="#cotizar">Cotizar este paquete</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="destinos" id="destinos">
+  <div class="wrap">
+    <h2>Más destinos de México</h2>
+    <p class="sub">Además de Cancún, armamos viajes a ciudades y pueblos de todo el país.</p>
+    <div class="grid3">
+      <article class="tile t1">
+        <h3>San Miguel de Allende</h3>
+        <p>Guanajuato, donde nació vivac.mx.</p>
+        <a href="#cotizar">Cotizar este destino</a>
+        <img src="img/parroquia.webp" alt="Parroquia de San Miguel Arcángel" width="520" height="899" loading="lazy">
+      </article>
+      <article class="tile t2">
+        <h3>Chichén Itzá</h3>
+        <p>Yucatán, excursión desde Cancún.</p>
+        <a href="#cotizar">Cotizar este destino</a>
+        <img src="img/chichen-itza.webp" alt="Pirámide de Kukulcán en Chichén Itzá" width="1100" height="470" loading="lazy">
+      </article>
+      <article class="tile t3">
+        <h3>Ciudad de México</h3>
+        <p>Palacio de Bellas Artes y mucho más.</p>
+        <a href="#cotizar">Cotizar este destino</a>
+        <img src="img/bellas-artes.webp" alt="Palacio de Bellas Artes" width="900" height="541" loading="lazy">
       </article>
     </div>
   </div>
