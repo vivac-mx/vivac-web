@@ -72,6 +72,21 @@ h3{font-size:22px;font-weight:600;margin-bottom:6px}
 .paq .foto .detalle{position:absolute;right:4%;bottom:-6%;width:42%;height:auto}
 .vigencia{font-size:14px;color:var(--gris);margin:-8px 0 12px}
 .cargando{grid-column:1/-1;color:var(--gris)}
+[hidden]{display:none!important}
+.campo-tel{display:flex;flex-direction:column;gap:6px}
+.campo-tel>label{font-size:15px;font-weight:500}
+.tel{display:flex;gap:8px}
+.tel>input{flex:1;min-width:0}
+.pais{position:relative;display:flex}
+.pais-btn{display:flex;align-items:center;gap:8px;font:400 17px "Outfit",sans-serif;padding:0 12px;border:1.5px solid #9a9a9a;border-radius:10px;background:var(--blanco);cursor:pointer}
+.pais-btn img{width:22px;height:auto}
+.pais-lista{position:absolute;z-index:10;top:calc(100% + 6px);left:0;width:min(330px,86vw);background:var(--blanco);border:1.5px solid #9a9a9a;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:10px}
+.pais-lista input{width:100%;margin-bottom:8px}
+.pais-lista ul{list-style:none;padding:0;margin:0;max-height:240px;overflow-y:auto}
+.opcion{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:none;font:400 16px "Outfit",sans-serif;padding:8px;border-radius:8px;cursor:pointer}
+.opcion:hover,.opcion:focus-visible{background:var(--verde-claro)}
+.opcion .n{flex:1}
+.opcion .d{color:var(--gris)}
 .paq:nth-child(3n+2){border-top-color:var(--verde)}
 .paq:nth-child(3n){border-top-color:var(--negro)}
 .paq ul{margin:14px 0 22px 18px;color:var(--gris);font-size:16px}
@@ -197,12 +212,32 @@ form{grid-template-columns:1fr}
     <form id="form-cotiza">
       <label>Nombre<input name="nombre" required autocomplete="name"></label>
       <label>Correo electrónico<input type="email" name="correo" required autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
-      <label>WhatsApp o teléfono<input type="tel" name="telefono" autocomplete="tel" placeholder="Ej. 998 123 4567"></label>
+      <div class="campo-tel">
+        <label for="telefono">WhatsApp o teléfono</label>
+        <div class="tel">
+          <div class="pais" id="pais">
+            <button type="button" class="pais-btn" id="pais-btn" aria-haspopup="true" aria-expanded="false" aria-label="Clave de país: México +52">
+              <img src="https://flagcdn.com/w40/mx.png" alt="" width="22" height="16"><span class="clave-txt">+52</span><span aria-hidden="true">▾</span>
+            </button>
+            <div class="pais-lista" id="pais-lista" hidden>
+              <input type="search" id="pais-buscar" placeholder="Buscar país o clave" aria-label="Buscar país o clave" autocomplete="off">
+              <ul id="pais-ul"></ul>
+            </div>
+          </div>
+          <input type="tel" id="telefono" name="telefono" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10 dígitos">
+        </div>
+        <input type="hidden" id="clave" name="clave" value="52">
+      </div>
       <label>Ciudad de salida<input name="origen" required placeholder="Ej. Ciudad de México"></label>
       <label>Destino
-        <select name="destino"><option>Cancún</option><option>Otro destino de México</option></select>
+        <select id="destino" name="destino">
+          <option>Cancún</option><option>Los Cabos</option><option>Puerto Vallarta</option><option>Huatulco</option>
+          <option>San Cristóbal de las Casas</option><option>Ciudad de México</option><option>Puebla</option>
+          <option>San Miguel de Allende</option><option>Otro destino de México</option><option>Destino internacional</option>
+        </select>
       </label>
       <label>Presupuesto aproximado<input name="presupuesto" placeholder="Ej. $25,000 MXN"></label>
+      <label class="full" id="otro-destino-campo" hidden>¿A qué destino quieres viajar?<input name="otro_destino" maxlength="100" disabled></label>
       <label>Fecha de salida<input type="date" name="salida" required></label>
       <label>Fecha de regreso<input type="date" name="regreso" required></label>
       <label>Adultos<input type="number" name="adultos" min="1" value="2" required></label>
@@ -246,9 +281,9 @@ form{grid-template-columns:1fr}
     <h2>Contacto</h2>
     <p class="sub">Escríbenos por el canal que prefieras.</p>
     <div class="datos">
-      <div><h3>WhatsApp</h3><p><a href="https://wa.me/529983394281">+52 998 339 4281</a></p></div>
+      <div><h3>WhatsApp y correo</h3><p><a href="https://wa.me/529983394281">+52 998 339 4281</a></p><p><a href="mailto:info@vivac.mx">info@vivac.mx</a></p></div>
       <div><h3>Redes sociales</h3><p><a href="https://www.instagram.com/viajes.vivac/" target="_blank" rel="noopener">Instagram @viajes.vivac</a><br><a href="https://www.facebook.com/vivacmx" target="_blank" rel="noopener">Facebook /vivacmx</a></p></div>
-      <div><h3>Oficina</h3><p>Plaza Comercial La Vista, Local 19, San Miguel de Allende, Gto.</p></div>
+      <div><h3>Sede</h3><p>Kusamil-A, Lote 16-2, SM 110, Paseo Kusamil, Cancún, Quintana Roo, MX.</p></div>
     </div>
   </div>
 </section>
@@ -256,7 +291,7 @@ form{grid-template-columns:1fr}
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Vivac Vacations de México S.A.S. de C.V. Todos los derechos reservados.</span>
+    <span>© 2026 Viajes Vivac S.A.S. de C.V. Todos los derechos reservados.</span>
     <span>www.vivac.mx</span>
   </div>
 </footer>
@@ -294,6 +329,7 @@ form.addEventListener("submit", function (e) {
     .then(function (d) {
       if (!d.ok) { var err = new Error("servidor"); err.mensaje = d.error; throw err; }
       form.reset();
+      resetearExtras();
       fijarMinimos();
       estado.className = "ok";
       estado.textContent = "¡Listo! Recibimos tu solicitud y te respondemos pronto con tu cotización.";
@@ -390,6 +426,125 @@ cargar("datos/destinos.json").then(function (d) {
   var c = document.querySelector("#lista-destinos .cargando");
   if (c) { c.textContent = "Escríbenos y armamos tu viaje a cualquier destino de México."; }
 });
+
+/* ---- Teléfono con clave de país ---- */
+var DIAL = "AF93,AL355,DZ213,AS1,AD376,AO244,AI1,AG1,AR54,AM374,AW297,AU61,AT43,AZ994,BS1,BH973,BD880,BB1,BY375,BE32,BZ501,BJ229,BM1,BT975,BO591,BA387,BW267,BR55,IO246,VG1,BN673,BG359,BF226,BI257,KH855,CM237,CA1,CV238,KY1,CF236,TD235,CL56,CN86,CO57,KM269,CG242,CD243,CK682,CR506,CI225,HR385,CU53,CW599,CY357,CZ420,DK45,DJ253,DM1,DO1,EC593,EG20,SV503,GQ240,ER291,EE372,SZ268,ET251,FK500,FO298,FJ679,FI358,FR33,GF594,PF689,GA241,GM220,GE995,DE49,GH233,GI350,GR30,GL299,GD1,GP590,GU1,GT502,GG44,GN224,GW245,GY592,HT509,HN504,HK852,HU36,IS354,IN91,ID62,IR98,IQ964,IE353,IM44,IL972,IT39,JM1,JP81,JE44,JO962,KZ7,KE254,KI686,XK383,KW965,KG996,LA856,LV371,LB961,LS266,LR231,LY218,LI423,LT370,LU352,MO853,MG261,MW265,MY60,MV960,ML223,MT356,MH692,MQ596,MR222,MU230,YT262,MX52,FM691,MD373,MC377,MN976,ME382,MS1,MA212,MZ258,MM95,NA264,NR674,NP977,NL31,NC687,NZ64,NI505,NE227,NG234,NU683,KP850,MK389,MP1,NO47,OM968,PK92,PW680,PS970,PA507,PG675,PY595,PE51,PH63,PL48,PT351,PR1,QA974,RE262,RO40,RU7,RW250,BL590,SH290,KN1,LC1,MF590,PM508,VC1,WS685,SM378,ST239,SA966,SN221,RS381,SC248,SL232,SG65,SX1,SK421,SI386,SB677,SO252,ZA27,KR82,SS211,ES34,LK94,SD249,SR597,SE46,CH41,SY963,TW886,TJ992,TZ255,TH66,TL670,TG228,TK690,TO676,TT1,TN216,TR90,TM993,TC1,TV688,VI1,UG256,UA380,AE971,GB44,US1,UY598,UZ998,VU678,VA39,VE58,VN84,WF681,YE967,ZM260,ZW263,AX358,BQ599,CC61,CX61,SJ47";
+var PAISES = [];
+(function () {
+  var dn = null;
+  try { dn = new Intl.DisplayNames(["es"], { type: "region" }); } catch (e) { dn = null; }
+  DIAL.split(",").forEach(function (t) {
+    var iso = t.slice(0, 2), nombre = iso;
+    try { if (dn) { nombre = dn.of(iso) || iso; } } catch (e) {}
+    PAISES.push({ iso: iso, dial: t.slice(2), nombre: nombre });
+  });
+  PAISES.sort(function (a, b) {
+    if (a.iso === "MX") { return -1; }
+    if (b.iso === "MX") { return 1; }
+    return a.nombre.localeCompare(b.nombre, "es");
+  });
+})();
+function norm(t) { return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+function bandera(iso, ancho) { return "https://flagcdn.com/w" + ancho + "/" + iso.toLowerCase() + ".png"; }
+var paisBtn = document.getElementById("pais-btn");
+var paisLista = document.getElementById("pais-lista");
+var paisUl = document.getElementById("pais-ul");
+var paisBuscar = document.getElementById("pais-buscar");
+var claveInput = document.getElementById("clave");
+var telInput = document.getElementById("telefono");
+function validarTel() {
+  var n = telInput.value.length, msg = "";
+  if (n) {
+    if (claveInput.value === "52" && n !== 10) { msg = "Escribe los 10 dígitos de tu número."; }
+    else if (n < 6) { msg = "Escribe un número válido."; }
+  }
+  telInput.setCustomValidity(msg);
+}
+telInput.addEventListener("input", function () {
+  var limpio = telInput.value.replace(/\D/g, "").slice(0, 10);
+  if (telInput.value !== limpio) { telInput.value = limpio; }
+  validarTel();
+});
+function cerrarPaises() {
+  paisLista.hidden = true;
+  paisBtn.setAttribute("aria-expanded", "false");
+}
+function elegirPais(p) {
+  claveInput.value = p.dial;
+  var im = paisBtn.querySelector("img");
+  im.style.visibility = "";
+  im.src = bandera(p.iso, 40);
+  paisBtn.querySelector(".clave-txt").textContent = "+" + p.dial;
+  paisBtn.setAttribute("aria-label", "Clave de país: " + p.nombre + " +" + p.dial);
+  validarTel();
+  cerrarPaises();
+}
+function pintarPaises(filtro) {
+  var q = norm(filtro || "").replace("+", "");
+  paisUl.textContent = "";
+  PAISES.forEach(function (p) {
+    if (q && norm(p.nombre).indexOf(q) === -1 && p.dial.indexOf(q) !== 0 && p.iso.toLowerCase() !== q) { return; }
+    var li = el("li"), b = el("button", "opcion"), im = el("img");
+    b.type = "button";
+    im.src = bandera(p.iso, 20); im.width = 20; im.height = 15; im.alt = ""; im.loading = "lazy";
+    b.appendChild(im);
+    b.appendChild(el("span", "n", p.nombre));
+    b.appendChild(el("span", "d", "+" + p.dial));
+    b.addEventListener("click", function () { elegirPais(p); });
+    li.appendChild(b);
+    paisUl.appendChild(li);
+  });
+}
+paisBtn.addEventListener("click", function () {
+  if (!paisLista.hidden) { cerrarPaises(); return; }
+  paisBuscar.value = "";
+  pintarPaises("");
+  paisLista.hidden = false;
+  paisBtn.setAttribute("aria-expanded", "true");
+  paisBuscar.focus();
+});
+paisBuscar.addEventListener("input", function () { pintarPaises(paisBuscar.value); });
+paisBuscar.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    var primero = paisUl.querySelector("button");
+    if (primero) { primero.click(); }
+  }
+});
+document.addEventListener("click", function (e) {
+  if (!paisLista.hidden && !e.target.closest("#pais")) { cerrarPaises(); }
+});
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && !paisLista.hidden) { cerrarPaises(); paisBtn.focus(); }
+});
+
+/* ---- Destino: campo extra para "otro destino" ---- */
+var destinoSel = document.getElementById("destino");
+var otroCampo = document.getElementById("otro-destino-campo");
+var otroInput = otroCampo.querySelector("input");
+function revisarDestino() {
+  var abre = destinoSel.value === "Otro destino de México" || destinoSel.value === "Destino internacional";
+  otroCampo.hidden = !abre;
+  otroInput.disabled = !abre;
+  otroInput.required = abre;
+  if (abre) {
+    otroInput.placeholder = destinoSel.value === "Destino internacional" ? "Ej. Madrid, España" : "Ej. Mazatlán, Sinaloa";
+  } else {
+    otroInput.value = "";
+  }
+}
+destinoSel.addEventListener("change", revisarDestino);
+revisarDestino();
+
+function resetearExtras() {
+  elegirPais(PAISES[0]);
+  telInput.value = "";
+  validarTel();
+  revisarDestino();
+}
+document.addEventListener("error", function (e) {
+  if (e.target.tagName === "IMG" && e.target.closest("#pais")) { e.target.style.visibility = "hidden"; }
+}, true);
 </script>
 </body>
 </html>

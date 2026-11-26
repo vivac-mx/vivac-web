@@ -34,9 +34,11 @@ if (!empty($_POST['web'])) {
 
 $nombre = linea('nombre', 100);
 $correo = linea('correo', 150);
-$telefono = linea('telefono', 40);
+$clave = preg_replace('/\D/', '', linea('clave', 4));
+$telefono = preg_replace('/\D/', '', linea('telefono', 20));
 $origen = linea('origen', 100);
 $destino = linea('destino', 60);
+$otroDestino = linea('otro_destino', 100);
 $presupuesto = linea('presupuesto', 60);
 $salida = linea('salida', 10);
 $regreso = linea('regreso', 10);
@@ -50,6 +52,28 @@ if ($nombre === '' || $origen === '') {
 }
 if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     responder(false, 'Escribe un correo electrónico válido para poder responderte.');
+}
+
+$destinosValidos = ['Cancún', 'Los Cabos', 'Puerto Vallarta', 'Huatulco', 'San Cristóbal de las Casas',
+    'Ciudad de México', 'Puebla', 'San Miguel de Allende', 'Otro destino de México', 'Destino internacional'];
+if (!in_array($destino, $destinosValidos, true)) {
+    responder(false, 'Elige un destino válido.');
+}
+if ($destino === 'Otro destino de México' || $destino === 'Destino internacional') {
+    if ($otroDestino === '') {
+        responder(false, 'Escribe el destino al que quieres viajar.');
+    }
+    $destino .= ': ' . $otroDestino;
+}
+
+if ($telefono !== '') {
+    if ($clave === '') {
+        $clave = '52';
+    }
+    $largo = strlen($telefono);
+    if ($largo > 10 || $largo < 6 || ($clave === '52' && $largo !== 10)) {
+        responder(false, 'Revisa tu número de teléfono.');
+    }
 }
 
 $hoy = new DateTime('today');
@@ -71,7 +95,7 @@ if ($adultos < 1 || $adultos > 50 || $menores < 0 || $menores > 50) {
 $cuerpo = "Nueva solicitud de cotización desde vivac.mx\n\n"
     . "Nombre: $nombre\n"
     . "Correo: $correo\n"
-    . "WhatsApp o teléfono: " . ($telefono !== '' ? $telefono : 'no indicado') . "\n"
+    . "WhatsApp o teléfono: " . ($telefono !== '' ? "+$clave $telefono" : 'no indicado') . "\n"
     . "Ciudad de salida: $origen\n"
     . "Destino: $destino\n"
     . "Fechas: $salida al $regreso\n"
