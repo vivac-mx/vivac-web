@@ -1,15 +1,42 @@
 {
   "paquetes": [
     {
-      "nombre": "Cancún Mágico",
-      "precio": "Desde $9,500 MXN por persona",
-      "vigencia": "Vigente al 25 de Enero 2027",
+      "nombre": "Cancún en pareja",
+      "precio": "Precio: por definir",
+      "vigencia": "",
       "incluye": [
-        "Vuelos Redondos operados por Volaris",
-        "Hospedaje en Hotel Krystal Cancún 3 Noches",
-        "Traslado desde y hacia el Aeropuerto de Cancún"
+        "Vuelo redondo desde tu ciudad",
+        "Hotel con playa",
+        "Traslados y actividades opcionales"
       ],
-      "foto": "/img/juan-pablo-garcia-aoA4_nG0oy4-unsplash-vivac.mx.jpg",
+      "foto": "/img/mar.webp",
+      "foto_detalle": "",
+      "ocultar": false
+    },
+    {
+      "nombre": "Cancún en familia",
+      "precio": "Precio: por definir",
+      "vigencia": "",
+      "incluye": [
+        "Vuelo para todos los viajeros",
+        "Hotel con opciones para niños",
+        "Parques y excursiones opcionales"
+      ],
+      "foto": "/img/cascada.webp",
+      "foto_detalle": "/img/guacamaya.webp",
+      "ocultar": false
+    },
+    {
+      "nombre": "Cancún con amigos",
+      "precio": "Precio: por definir",
+      "vigencia": "",
+      "incluye": [
+        "Vuelo en grupo",
+        "Hotel todo incluido",
+        "Vida nocturna e islas cercanas"
+      ],
+      "foto": "/img/mar.webp",
+      "foto_detalle": "/img/globos.webp",
       "ocultar": false
     }
   ]
