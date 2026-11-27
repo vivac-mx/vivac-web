@@ -140,6 +140,42 @@ section{padding:56px 0}
 .hero::before{background:linear-gradient(180deg,rgba(4,38,20,.8) 0%,rgba(4,38,20,.4) 100%)}
 form{grid-template-columns:1fr}
 }
+
+.renta{background:var(--verde-claro)}
+.renta-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:start}
+.cal{background:var(--blanco);border-radius:16px;padding:16px;margin-top:14px}
+.cal-cab{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-cab strong{display:inline-block}
+.cal-cab strong::first-letter{text-transform:uppercase}
+.cal-cab button{width:40px;height:40px;border:0;border-radius:50%;background:var(--verde-claro);font-size:22px;cursor:pointer}
+.cal-cab button:disabled{opacity:.35;cursor:not-allowed}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-dow{font-size:13px;color:var(--gris);font-weight:600}
+.dia{aspect-ratio:1;border:0;border-radius:10px;background:transparent;font:500 16px "Outfit",sans-serif;cursor:pointer}
+.dia:hover:not(:disabled){background:var(--verde-claro)}
+.dia:disabled{color:#b5b5b5;cursor:not-allowed}
+.dia.ocupado{background:#f1e3e3;color:#a46a6a;text-decoration:line-through}
+.dia.rango{background:var(--verde-claro);border-radius:0}
+.dia.sel,.dia.sel:hover:not(:disabled){background:var(--granate);color:var(--blanco);font-weight:700}
+.cal-resumen{margin-top:12px;font-weight:500}
+.enlace{background:none;border:0;color:var(--granate);font:600 15px "Outfit",sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0}
+.auto-card{background:var(--blanco);border-radius:20px;padding:24px;display:grid;grid-template-columns:1fr;gap:14px}
+.auto-card>img{width:100%;height:auto}
+.auto-desc{color:var(--gris);font-size:16px;margin-top:-8px}
+.desglose{display:grid;gap:6px;margin:0}
+.desglose div{display:flex;justify-content:space-between;gap:12px;font-size:16px}
+.desglose dt{color:var(--gris)}
+.desglose dd{margin:0;font-weight:600;text-align:right}
+.desglose .tot{border-top:1px solid var(--linea);padding-top:8px;font-size:19px}
+.renta-campos{display:grid;gap:14px}
+.chk{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400}
+.chk input{width:20px;height:20px;padding:0;flex:none;margin-top:3px}
+.aviso{background:var(--blanco);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-weight:500;border-left:6px solid var(--verde)}
+.aviso.err{border-left-color:var(--granate)}
+.auto-vacio{background:var(--blanco);border-radius:16px;padding:26px;color:var(--gris)}
+#renta-estado{font-weight:500}
+#renta-estado.err{color:var(--granate)}
+@media(max-width:860px){.renta-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -151,6 +187,7 @@ form{grid-template-columns:1fr}
     <nav aria-label="Principal">
       <a href="#paquetes">Paquetes</a>
       <a href="#destinos">Destinos</a>
+      <a href="#renta">Renta de auto</a>
       <a href="#cotizar">Cotizar</a>
       <a href="#nosotros">Quiénes somos</a>
       <a href="#contacto">Contacto</a>
@@ -248,6 +285,63 @@ form{grid-template-columns:1fr}
       <p id="estado" role="status" aria-live="polite"></p>
       <small>Tus datos se envían a vivac.mx solo para preparar tu cotización. No se guardan en este sitio.</small>
     </form>
+  </div>
+</section>
+
+<section class="renta" id="renta">
+  <div class="wrap">
+    <h2>Renta de auto en Cancún</h2>
+    <p class="sub">Elige tus fechas, mira tu precio y aparta tu auto pagando el primer día de renta como garantía.</p>
+    <div id="renta-aviso" class="aviso" role="status" hidden></div>
+    <div class="renta-grid">
+      <div>
+        <label>Sucursal<input value="Cancún, Quintana Roo" readonly></label>
+        <div class="cal" id="cal" aria-label="Calendario de recogida y devolución"></div>
+        <p class="cal-resumen" id="cal-resumen"></p>
+        <button type="button" class="enlace" id="cal-borrar" hidden>Borrar fechas</button>
+      </div>
+      <div>
+        <p class="auto-vacio" id="auto-vacio">Selecciona la fecha de recogida y la de devolución para ver el auto disponible.</p>
+        <form class="auto-card" id="renta-form" hidden autocomplete="off">
+          <img id="auto-img" alt="" width="900" height="407">
+          <h3 id="auto-nombre"></h3>
+          <p class="auto-desc" id="auto-desc"></p>
+          <dl class="desglose">
+            <div><dt>Recogida</dt><dd id="d-desde"></dd></div>
+            <div><dt>Devolución</dt><dd id="d-hasta"></dd></div>
+            <div><dt>Días de renta</dt><dd id="d-dias"></dd></div>
+            <div><dt>Precio por día</dt><dd id="d-precio"></dd></div>
+            <div class="tot"><dt>Total de la renta</dt><dd id="d-total"></dd></div>
+            <div><dt>Pago hoy como garantía (primer día)</dt><dd id="d-garantia"></dd></div>
+          </dl>
+          <div class="renta-campos">
+            <label>Nombre completo<input name="nombre" required autocomplete="name"></label>
+            <label>Correo electrónico<input type="email" name="correo" required autocomplete="email" placeholder="tucorreo@ejemplo.com"></label>
+            <div class="campo-tel">
+              <label for="rp-tel">WhatsApp o teléfono</label>
+              <div class="tel">
+                <div class="pais" id="rp-caja">
+                  <button type="button" class="pais-btn" id="rp-btn" aria-haspopup="true" aria-expanded="false" aria-label="Clave de país: México +52">
+                    <img src="https://flagcdn.com/w40/mx.png" alt="" width="22" height="16"><span class="clave-txt">+52</span><span aria-hidden="true">▾</span>
+                  </button>
+                  <div class="pais-lista" id="rp-lista" hidden>
+                    <input type="search" id="rp-buscar" placeholder="Buscar país o clave" aria-label="Buscar país o clave" autocomplete="off">
+                    <ul id="rp-ul"></ul>
+                  </div>
+                </div>
+                <input type="tel" id="rp-tel" name="telefono" inputmode="numeric" maxlength="10" required autocomplete="tel-national" placeholder="10 dígitos">
+              </div>
+              <input type="hidden" id="rp-clave" name="clave" value="52">
+            </div>
+            <label class="chk"><input type="checkbox" required> Entiendo que hoy se cobrará el primer día de renta como garantía de mi reservación.</label>
+          </div>
+          <input type="text" name="web" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn verde" type="submit" id="renta-btn">Reservar y pagar garantía</button>
+          <p id="renta-estado" role="status"></p>
+          <small>El pago se realiza en la página segura de Clip. Tus fechas se bloquean cuando se confirma el pago.</small>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -543,8 +637,186 @@ function resetearExtras() {
   revisarDestino();
 }
 document.addEventListener("error", function (e) {
-  if (e.target.tagName === "IMG" && e.target.closest("#pais")) { e.target.style.visibility = "hidden"; }
+  if (e.target.tagName === "IMG" && e.target.closest(".pais")) { e.target.style.visibility = "hidden"; }
 }, true);
+
+/* ---- Renta de auto ---- */
+function initTel(pre) {
+  var btn = document.getElementById(pre + "-btn"), lista = document.getElementById(pre + "-lista");
+  var ul = document.getElementById(pre + "-ul"), bus = document.getElementById(pre + "-buscar");
+  var cl = document.getElementById(pre + "-clave"), tel = document.getElementById(pre + "-tel");
+  function valida() {
+    var n = tel.value.length, m = "";
+    if (n) {
+      if (cl.value === "52" && n !== 10) { m = "Escribe los 10 dígitos de tu número."; }
+      else if (n < 6) { m = "Escribe un número válido."; }
+    }
+    tel.setCustomValidity(m);
+  }
+  function cerrar() { lista.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+  function elegir(p) {
+    cl.value = p.dial;
+    var im = btn.querySelector("img"); im.style.visibility = ""; im.src = bandera(p.iso, 40);
+    btn.querySelector(".clave-txt").textContent = "+" + p.dial;
+    btn.setAttribute("aria-label", "Clave de país: " + p.nombre + " +" + p.dial);
+    valida(); cerrar();
+  }
+  function pintar(f) {
+    var q = norm(f || "").replace("+", "");
+    ul.textContent = "";
+    PAISES.forEach(function (p) {
+      if (q && norm(p.nombre).indexOf(q) === -1 && p.dial.indexOf(q) !== 0 && p.iso.toLowerCase() !== q) { return; }
+      var li = el("li"), b = el("button", "opcion"), im = el("img");
+      b.type = "button"; im.src = bandera(p.iso, 20); im.width = 20; im.height = 15; im.alt = ""; im.loading = "lazy";
+      b.appendChild(im); b.appendChild(el("span", "n", p.nombre)); b.appendChild(el("span", "d", "+" + p.dial));
+      b.addEventListener("click", function () { elegir(p); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  btn.addEventListener("click", function () {
+    if (!lista.hidden) { cerrar(); return; }
+    bus.value = ""; pintar(""); lista.hidden = false; btn.setAttribute("aria-expanded", "true"); bus.focus();
+  });
+  bus.addEventListener("input", function () { pintar(bus.value); });
+  bus.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); var b = ul.querySelector("button"); if (b) { b.click(); } }
+  });
+  document.addEventListener("click", function (e) { if (!lista.hidden && !e.target.closest("#" + pre + "-caja")) { cerrar(); } });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !lista.hidden) { cerrar(); btn.focus(); } });
+  tel.addEventListener("input", function () {
+    var l = tel.value.replace(/\D/g, "").slice(0, 10);
+    if (tel.value !== l) { tel.value = l; }
+    valida();
+  });
+  return { reset: function () { elegir(PAISES[0]); tel.value = ""; valida(); } };
+}
+var rpTel = initTel("rp");
+
+var RENTA = { auto: null, rangos: [], pagos: false, mes: null, desde: "", hasta: "" };
+function hoyISO() { var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+function isoDe(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+function fechaLarga(f) { var p = f.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" }); }
+function dinero(n) { return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(n); }
+function ocupado(f) { return RENTA.rangos.some(function (r) { return f >= r.desde && f <= r.hasta; }); }
+function limiteReserva() {
+  var l = "9999-12-31";
+  if (RENTA.desde) { RENTA.rangos.forEach(function (r) { if (r.desde > RENTA.desde && r.desde < l) { l = r.desde; } }); }
+  return l;
+}
+function diasRenta() {
+  if (!RENTA.desde || !RENTA.hasta) { return 0; }
+  var a = RENTA.desde.split("-"), b = RENTA.hasta.split("-");
+  var d = Math.round((Date.UTC(+b[0], +b[1] - 1, +b[2]) - Date.UTC(+a[0], +a[1] - 1, +a[2])) / 864e5);
+  return Math.max(1, d);
+}
+function elegirDia(f) {
+  if (!RENTA.desde || RENTA.hasta) { RENTA.desde = f; RENTA.hasta = ""; } else { RENTA.hasta = f; }
+  actualizarRenta();
+}
+function pintarCal() {
+  var cal = document.getElementById("cal"), hoy = hoyISO(), m = RENTA.mes, lim = limiteReserva();
+  var eligiendo = RENTA.desde && !RENTA.hasta;
+  cal.textContent = "";
+  var cab = el("div", "cal-cab"), ant = el("button", null, "‹"), sig = el("button", null, "›");
+  ant.type = "button"; sig.type = "button";
+  ant.setAttribute("aria-label", "Mes anterior"); sig.setAttribute("aria-label", "Mes siguiente");
+  ant.disabled = isoDe(new Date(m.getFullYear(), m.getMonth(), 1)) <= hoy.slice(0, 7) + "-01";
+  ant.onclick = function () { RENTA.mes = new Date(m.getFullYear(), m.getMonth() - 1, 1); pintarCal(); };
+  sig.onclick = function () { RENTA.mes = new Date(m.getFullYear(), m.getMonth() + 1, 1); pintarCal(); };
+  cab.appendChild(ant);
+  cab.appendChild(el("strong", null, m.toLocaleDateString("es-MX", { month: "long", year: "numeric" })));
+  cab.appendChild(sig);
+  cal.appendChild(cab);
+  var g = el("div", "cal-g");
+  ["L", "M", "M", "J", "V", "S", "D"].forEach(function (x) { g.appendChild(el("span", "cal-dow", x)); });
+  var off = (new Date(m.getFullYear(), m.getMonth(), 1).getDay() + 6) % 7;
+  var n = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+  for (var i = 0; i < off; i++) { g.appendChild(el("span")); }
+  for (var d = 1; d <= n; d++) {
+    (function (d) {
+      var f = isoDe(new Date(m.getFullYear(), m.getMonth(), d)), b = el("button", "dia", String(d)), ocu = ocupado(f);
+      b.type = "button";
+      if (ocu) { b.classList.add("ocupado"); }
+      if (f === RENTA.desde || f === RENTA.hasta) { b.classList.add("sel"); }
+      else if (RENTA.desde && RENTA.hasta && f > RENTA.desde && f < RENTA.hasta) { b.classList.add("rango"); }
+      b.disabled = f < hoy || ocu || (eligiendo && (f < RENTA.desde || f >= lim));
+      b.setAttribute("aria-label", fechaLarga(f) + (ocu ? " (no disponible)" : ""));
+      b.onclick = function () { elegirDia(f); };
+      g.appendChild(b);
+    })(d);
+  }
+  cal.appendChild(g);
+}
+function actualizarRenta() {
+  pintarCal();
+  var res = document.getElementById("cal-resumen"), card = document.getElementById("renta-form");
+  var vacio = document.getElementById("auto-vacio"), borrar = document.getElementById("cal-borrar");
+  borrar.hidden = !RENTA.desde;
+  if (!RENTA.desde) { res.textContent = "Elige la fecha de recogida."; }
+  else if (!RENTA.hasta) { res.textContent = "Recogida: " + fechaLarga(RENTA.desde) + ". Ahora elige la fecha de devolución."; }
+  else { res.textContent = "Recogida: " + fechaLarga(RENTA.desde) + " · Devolución: " + fechaLarga(RENTA.hasta); }
+  var listo = !!(RENTA.auto && RENTA.desde && RENTA.hasta);
+  card.hidden = !listo;
+  vacio.hidden = listo;
+  if (!RENTA.auto) { vacio.textContent = "Por ahora no hay autos para reservar en línea. Escríbenos por WhatsApp."; vacio.hidden = false; }
+  if (!listo) { return; }
+  var a = RENTA.auto, dias = diasRenta(), precio = Number(a.precio_dia) || 0;
+  var img = document.getElementById("auto-img");
+  if (a.imagen && img.getAttribute("src") !== a.imagen) { img.src = a.imagen; }
+  img.alt = a.nombre || "Auto disponible";
+  document.getElementById("auto-nombre").textContent = a.nombre || "";
+  document.getElementById("auto-desc").textContent = a.descripcion || "";
+  document.getElementById("d-desde").textContent = fechaLarga(RENTA.desde);
+  document.getElementById("d-hasta").textContent = fechaLarga(RENTA.hasta);
+  document.getElementById("d-dias").textContent = dias + (dias === 1 ? " día" : " días");
+  document.getElementById("d-precio").textContent = dinero(precio);
+  document.getElementById("d-total").textContent = dinero(precio * dias);
+  document.getElementById("d-garantia").textContent = dinero(precio);
+  var bt = document.getElementById("renta-btn"), st = document.getElementById("renta-estado");
+  bt.textContent = "Reservar y pagar " + dinero(precio);
+  bt.disabled = !RENTA.pagos;
+  if (!RENTA.pagos) { st.className = ""; st.textContent = "La reservación en línea estará disponible muy pronto. Mientras tanto, escríbenos por WhatsApp para apartar tu auto."; }
+}
+function cargarRangos() {
+  return fetch("renta-disponibilidad.php", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+    if (!d.ok) { throw new Error("x"); }
+    RENTA.rangos = d.rangos || []; RENTA.pagos = !!d.pagos;
+  }).catch(function () { RENTA.rangos = []; RENTA.pagos = false; });
+}
+document.getElementById("cal-borrar").addEventListener("click", function () { RENTA.desde = ""; RENTA.hasta = ""; actualizarRenta(); });
+cargar("datos/renta.json").then(function (d) { RENTA.auto = d.vehiculo || null; }).catch(function () { RENTA.auto = null; })
+  .then(cargarRangos).then(function () {
+    RENTA.mes = new Date(); RENTA.mes.setDate(1);
+    actualizarRenta();
+  });
+
+document.getElementById("renta-form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var f = e.target, st = document.getElementById("renta-estado"), bt = document.getElementById("renta-btn");
+  var fd = new FormData(f);
+  fd.append("desde", RENTA.desde); fd.append("hasta", RENTA.hasta);
+  bt.disabled = true; bt.textContent = "Redirigiendo al pago…"; st.className = ""; st.textContent = "";
+  fetch("renta-reservar.php", { method: "POST", body: fd }).then(function (r) { return r.json(); }).then(function (d) {
+    if (d.ok && d.url) { window.location.href = d.url; return; }
+    var err = new Error("x"); err.mensaje = d.error; err.ocupado = d.ocupado; throw err;
+  }).catch(function (err) {
+    st.className = "err";
+    st.textContent = err.mensaje || "No pudimos iniciar el pago. Escríbenos por WhatsApp y apartamos tu auto.";
+    if (err.ocupado) { RENTA.desde = ""; RENTA.hasta = ""; cargarRangos().then(actualizarRenta); }
+    else { bt.disabled = false; bt.textContent = "Reservar y pagar " + dinero(Number(RENTA.auto.precio_dia) || 0); }
+  });
+});
+
+(function () {
+  var q = new URLSearchParams(window.location.search), a = document.getElementById("renta-aviso");
+  if (q.get("renta") === "ok") {
+    a.className = "aviso"; a.hidden = false;
+    a.textContent = "¡Gracias! Recibimos tu pago. En unos minutos te enviaremos la confirmación por correo y un asesor te contactará por WhatsApp.";
+  } else if (q.get("renta") === "error") {
+    a.className = "aviso err"; a.hidden = false;
+    a.textContent = "El pago no se completó. Tus fechas se liberan en unos minutos y puedes intentarlo de nuevo o escribirnos por WhatsApp.";
+  }
+})();
 </script>
 </body>
 </html>
