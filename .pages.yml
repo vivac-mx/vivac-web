@@ -104,3 +104,26 @@ content:
           - name: subtitulo
             label: Subtítulo
             type: text
+
+  - name: renta
+    label: Renta de auto
+    type: file
+    path: datos/renta.json
+    format: json
+    fields:
+      - name: vehiculo
+        label: Vehículo
+        type: object
+        fields:
+          - name: nombre
+            label: Nombre del vehículo
+            type: string
+          - name: descripcion
+            label: Descripción corta
+            type: text
+          - name: precio_dia
+            label: Precio por día (MXN)
+            type: number
+          - name: imagen
+            label: Foto del vehículo
+            type: image
