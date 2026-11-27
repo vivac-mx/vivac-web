@@ -127,3 +127,6 @@ content:
           - name: imagen
             label: Foto del vehículo
             type: image
+          - name: condiciones
+            label: Condiciones de la renta (aparecen en el PDF de la reserva)
+            type: text
