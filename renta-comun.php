@@ -111,3 +111,57 @@ function enviar($para, $asunto, $texto, $responder = '') {
         . "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n";
     return @mail($para, mb_encode_mimeheader($asunto, 'UTF-8', 'B', "\r\n"), $texto, $h);
 }
+
+// ---------- Formato, número de reserva, correo con adjuntos y calendario ----------
+function fecha_larga($f) {
+    $m = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    $t = strtotime($f);
+    return date('j', $t) . ' de ' . $m[(int) date('n', $t) - 1] . ' de ' . date('Y', $t);
+}
+
+function dinero($n) { return '$' . number_format((float) $n, 2) . ' MXN'; }
+
+function numero_reserva($r) {
+    if (($r['tipo'] ?? '') === 'bloqueo') { return 'BLOQUEO'; }
+    return isset($r['seq']) ? sprintf('RES-%04d', (int) $r['seq']) : strtoupper((string) $r['id']);
+}
+
+// Correo con texto, HTML y adjuntos. $adjuntos: [['nombre' => , 'tipo' => , 'datos' => ]]
+function enviar_completo($para, $asunto, $texto, $html, $adjuntos = [], $responder = '') {
+    $b1 = 'mix_' . bin2hex(random_bytes(8));
+    $b2 = 'alt_' . bin2hex(random_bytes(8));
+    $h = "From: vivac.mx <no-reply@vivac.mx>\r\n"
+        . ($responder !== '' ? "Reply-To: $responder\r\n" : '')
+        . "MIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"$b1\"\r\n";
+    $c = "--$b1\r\nContent-Type: multipart/alternative; boundary=\"$b2\"\r\n\r\n"
+        . "--$b2\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($texto))
+        . "--$b2\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . chunk_split(base64_encode($html))
+        . "--$b2--\r\n";
+    foreach ($adjuntos as $a) {
+        $c .= "--$b1\r\nContent-Type: {$a['tipo']}; name=\"{$a['nombre']}\"\r\nContent-Transfer-Encoding: base64\r\n"
+            . "Content-Disposition: attachment; filename=\"{$a['nombre']}\"\r\n\r\n" . chunk_split(base64_encode($a['datos']));
+    }
+    $c .= "--$b1--\r\n";
+    return @mail($para, mb_encode_mimeheader($asunto, 'UTF-8', 'B', "\r\n"), $c, $h);
+}
+
+function ics_texto($t) {
+    return str_replace(['\\', ';', ',', "\r\n", "\n"], ['\\\\', '\\;', '\\,', '\\n', '\\n'], (string) $t);
+}
+
+// Evento de día completo: del día de recogida al de devolución (ambos incluidos).
+function ics_evento($r, $auto) {
+    $ini = date('Ymd', strtotime($r['desde']));
+    $fin = date('Ymd', strtotime($r['hasta'] . ' +1 day'));
+    $desc = 'Reserva ' . numero_reserva($r) . "\n" . 'Cliente: ' . $r['nombre'] . "\n" . 'Teléfono: ' . $r['telefono'] . "\n"
+        . 'Correo: ' . $r['correo'] . "\n" . 'Total de la renta: ' . dinero($r['total']) . "\n" . 'Garantía pagada: ' . dinero($r['garantia']);
+    return "BEGIN:VEVENT\r\nUID:" . $r['id'] . "@vivac.mx\r\nDTSTAMP:" . gmdate('Ymd\THis\Z') . "\r\n"
+        . "DTSTART;VALUE=DATE:$ini\r\nDTEND;VALUE=DATE:$fin\r\n"
+        . 'SUMMARY:' . ics_texto((($r['tipo'] ?? '') === 'bloqueo') ? 'Auto no disponible - ' . $r['nombre'] : 'Renta ' . $r['vehiculo'] . ' - ' . $r['nombre'] . ' (' . numero_reserva($r) . ')') . "\r\n"
+        . 'DESCRIPTION:' . ics_texto($desc) . "\r\nLOCATION:Cancún\\, Quintana Roo\r\nEND:VEVENT\r\n";
+}
+
+function ics_calendario($eventos) {
+    return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//vivac.mx//Renta de autos//ES\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n"
+        . "X-WR-CALNAME:Renta de autos vivac.mx\r\nX-WR-TIMEZONE:America/Cancun\r\n" . implode('', $eventos) . "END:VCALENDAR\r\n";
+}
