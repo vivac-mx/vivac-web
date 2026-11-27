@@ -2,7 +2,7 @@
   "vehiculo": {
     "nombre": "Chevrolet Aveo LS 2025",
     "descripcion": "Disponible en nuestra sucursal de Cancún, Quintana Roo.",
-    "precio_dia": 599,
+    "precio_dia": 10,
     "imagen": "/img/aveo-ls-2025.webp"
   }
 }
